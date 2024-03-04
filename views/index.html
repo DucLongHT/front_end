@@ -30,17 +30,17 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 f-f-BeVietNam-Medium">
                     <li class="nav-item">
-                        <a class="nav-link active text-white" aria-current="page" href="#">Trang chủ</a>
+                        <a class="nav-link active text-white" aria-current="page" href="/views/index.html">Trang chủ</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Quản lý kì thi</a>
-                    </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link text-white nav-admin" href="/views/admin_dashboard.html">Quản lý kì thi</a>
+                    </li> -->
+                    <!-- <li class="nav-item">
                         <a class="nav-link text-white" href="#">Quản lý tài khoản</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Thống kê</a>
-                    </li>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                        <a class="nav-link text-white nav-admin" href="#">Thống kê</a>
+                    </li> -->
                     <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -63,11 +63,11 @@
                 </form> -->
                 <div class="d-flex gap-2">
                     <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="login()">
-                        Đăng nhập
+                        Đăng xuất
                     </button>
-                    <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="register()">
+                    <!-- <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="register()">
                         Đăng ký
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -415,7 +415,7 @@
             window.location.href = 'exam.html'
         }
         else {
-
+            window.location.href = 'result-exam.html'
         }
     }
     new DataTable('#table_exam');

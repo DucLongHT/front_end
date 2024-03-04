@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
+
 <body style="background: linear-gradient(to left, #FF0000, #FFD700); height: 100vh !important;">
 
     <section class="h-100">
@@ -28,7 +29,7 @@
                         <div class="d-flex gap-2 px-3 form-group"
                             style="border-radius: 9px;border: 0.833px solid #b3b3c9;">
                             <img src="/Image/Login/i-user.svg" alt="">
-                            <input class="form-control f-s-14 py-3" type="text" id="user_name" required
+                            <input class="form-control f-s-14 py-3" type="text" id="user_name" required focus="true"
                                 style="border: none; box-shadow: none;" placeholder="Nhập email hoặc số điện thoại">
                         </div>
                         <div class="invalid-feedback mess_user f-f-BeVietNam-Regular f-s-14">
@@ -93,7 +94,7 @@
 </body>
 <script>
 
-
+    $('#user_name').focus()
 
     function register() {
         if (validate()) {

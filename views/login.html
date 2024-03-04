@@ -89,31 +89,30 @@
 </body>
 <script>
 
+    $('#user_name').focus()
 
+    var users = localStorage.getItem('users');
+    if (!users) {
+        // Nếu mảng user chưa tồn tại, tạo một mảng mới và lưu vào localStorage
+        users = [];
+        users.push({
+            username: "admin",
+            password: "111"
+        });
+    } else {
+        // Nếu mảng user đã tồn tại, chuyển đổi từ chuỗi JSON sang mảng JavaScript
+        users = JSON.parse(users);
+    }
 
     function login() {
         if (validate()) {
             // Kiểm tra xem mảng user đã tồn tại trong localStorage chưa
-            var users = localStorage.getItem('users');
-            if (!users) {
-                // Nếu mảng user chưa tồn tại, tạo một mảng mới và lưu vào localStorage
-                users = [];
-            } else {
-                // Nếu mảng user đã tồn tại, chuyển đổi từ chuỗi JSON sang mảng JavaScript
-                users = JSON.parse(users);
+            if (users.find(user => user.username === $('#user_name').val() && user.password === $('#password').val() && user.username === "admin")) {
+
+                window.location.href = 'admin_dashboard.html'
             }
-
             if (users.find(user => user.username === $('#user_name').val() && user.password === $('#password').val())) {
-
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Đăng nhập thành công",
-                    showConfirmButton: true,
-                    // timer: 1500
-                }).then((result) => {
-                    window.location.href = 'index.html'
-                });
+                window.location.href = 'index.html'
             }
             else {
                 Swal.fire({
