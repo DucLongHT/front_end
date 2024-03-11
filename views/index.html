@@ -14,13 +14,18 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
 
 </head>
+<style>
+    .swal2-actions {
+        gap: 15px;
+    }
+</style>
 
 <body style="background-color: #f6f8fa;">
     <nav class="navbar navbar-expand-lg py-1" style="background-color: #bb2019;">
         <div class="container">
-            <a class="navbar-brand f-f-BeVietNam-SemiBold f-s-20 text-white me-0" href="/views/index.html">
+            <a class="navbar-brand f-f-BeVietNam-SemiBold f-s-20 text-white me-0" onclick="direcIndex()">
                 <img class=" p-1 px-2" src="/Image/Home/ptit-logo.png" alt=""
-                    style="width: 40%; background-color: #fff; border-radius: 50%;">
+                    style="width: 40%; background-color: #fff; border-radius: 50%; cursor: pointer;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -30,31 +35,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 f-f-BeVietNam-Medium">
                     <li class="nav-item">
-                        <a class="nav-link active text-white" aria-current="page" href="/views/index.html">Trang chủ</a>
+                        <a class="nav-link active text-white" style="cursor: pointer;" onclick="direcIndex()">Trang
+                            chủ</a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link text-white nav-admin" href="/views/admin_dashboard.html">Quản lý kì thi</a>
-                    </li> -->
-                    <!-- <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Quản lý tài khoản</a>
-                    </li> -->
-                    <!-- <li class="nav-item">
-                        <a class="nav-link text-white nav-admin" href="#">Thống kê</a>
-                    </li> -->
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Thống kê
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li> -->
+
 
                 </ul>
                 <!-- <form class="d-flex" role="search">
@@ -89,7 +73,7 @@
                                 <th>Thể loại</th>
                                 <th class="pe-2">Lớp</th>
                                 <th class="pe-2">Thời gian làm bài</th>
-                                <th class="pe-2">Thời gian bắt đầu</th>
+                                <th class="pe-2 ps-0">Thời gian bắt đầu</th>
                                 <th>Trạng thái</th>
                                 <th>Làm bài</th>
                             </tr>
@@ -109,260 +93,44 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <script src="/Javascripts/nav.js"></script>
+    <script src="/Javascripts/get-data.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
 </body>
 <script>
-    function login() {
-        window.location.href = 'login.html';
+    console.log(users);
+    console.log(exam_list);
+    const idUser = window.location.href.split("?idUser=")[1];
+    function getUserById(id) {
+        return users.find(function (user) {
+            return parseInt(user.id) === parseInt(id);
+        });
+    }
+    function getExamById(id) {
+        return exam_list.find(function (exam) {
+            return parseInt(exam.id) === parseInt(id);
+        });
     }
     function register() {
         window.location.href = 'register.html';
     }
-    const generateId = () => {
-        const timestamp = new Date().getTime();
-        const randomNumber = Math.floor(Math.random() * 10000);
-        const id = `${timestamp}${randomNumber}`;
-        return id;
-    };
-
-    const newId = generateId();
-    console.log(newId);
-    const data_exam = [
-        {
-            "name_exam": "Giữa kì 1",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 1,
-            "time_exam": 120,
-            "time_start": "8h/ 02-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Giữa kì 1",
-            "subject": "Văn",
-            "type": "Tự luận",
-            "class": 1,
-            "time_exam": 180,
-            "time_start": "9h/ 03-03-2023",
-            "status": 1
-        },
-        {
-            "name_exam": "Giữa kì 1",
-            "subject": "Khoa học",
-            "type": "Trắc nghiệm",
-            "class": 2,
-            "time_exam": 90,
-            "time_start": "10h/ 04-03-2023",
-            "status": 2
-        },
-        {
-            "name_exam": "Cuối kì 1",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 3,
-            "time_exam": 120,
-            "time_start": "14h/ 05-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 1",
-            "subject": "Văn",
-            "type": "Tự luận",
-            "class": 4,
-            "time_exam": 180,
-            "time_start": "8h/ 06-03-2023",
-            "status": 1
-        },
-        {
-            "name_exam": "Cuối kì 1",
-            "subject": "Khoa học",
-            "type": "Trắc nghiệm",
-            "class": 5,
-            "time_exam": 90,
-            "time_start": "9h/ 07-03-2023",
-            "status": 2
-        },
-        {
-            "name_exam": "Giữa kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 6,
-            "time_exam": 120,
-            "time_start": "10h/ 08-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Giữa kì 2",
-            "subject": "Văn",
-            "type": "Tự luận",
-            "class": 7,
-            "time_exam": 180,
-            "time_start": "14h/ 09-03-2023",
-            "status": 1
-        },
-        {
-            "name_exam": "Giữa kì 2",
-            "subject": "Khoa học",
-            "type": "Trắc nghiệm",
-            "class": 8,
-            "time_exam": 90,
-            "time_start": "8h/ 10-03-2023",
-            "status": 2
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        ,
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
-        },
-        {
-            "name_exam": "Cuối kì 2",
-            "subject": "Toán",
-            "type": "Trắc nghiệm",
-            "class": 9,
-            "time_exam": 120,
-            "time_start": "9h/ 11-03-2023",
-            "status": 0
+    function getStatusStudentOfExam(idExam, idUser) {
+        if (getExamById(idExam).status == 1) {
+            return 1
         }
-        // Các phần tử tiếp theo...
-    ];
-    console.log(data_exam);
+        // console.log(getExamById(idExam).students.find(student => student.id === idUser) );
+        else if (getExamById(idExam).students.find(student => student.id === idUser) == undefined) {
+            return 0
+        }
+        // console.log(getExamById(idExam).students.find(student => student.id === idUser).status);
+        return getExamById(idExam).students.find(student => student.id === idUser).status
+
+    }
     function getStatusExam(status) {
-        if (status == 0) return "Chưa bắt đầu"
-        else if (status == 1) return "Đang diễn ra"
+        if (status == 1) return "Chưa diễn ra"
+        else if (status == 0) return "Đang diễn ra"
         else return "Đã kết thúc"
     }
     function getContentButton(status) {
@@ -371,39 +139,37 @@
         else return "Kết quả"
     }
     function getColorButton(status) {
-        if (status == 0) return "success"
-        else if (status == 1) return "danger"
+        if (status == 1) return "success"
+        else if (status == 0) return "danger"
         else return "warning"
     }
     function getDataExam(data) {
         var html = ''
-
+        data.status = getStatus(data.time_start)
         data.forEach((element, index) => {
-            var time_exam = element.time_start.split(" ")[0];
-            var date_exam = element.time_start.split(" ")[1];
             html += `
             <tr class="align-middle">
                                 <td>${element.name_exam}</td>
                                 <td>${element.subject}</td>
                                 <td>${element.type}</td>
-                                <td>Lớp ${element.class}</td>
+                                <td>${element.class_exam}</td>
                                 <td><span class="f-f-BeVietNam-Bold">${element.time_exam} phút</span></td>
                                 <td>
-                                    <span class="f-f-BeVietNam-Bold">${time_exam}</span>
-                                  ${date_exam}
+                                    <span class="f-f-BeVietNam-Bold">${element.time_start}</span>
+                                  
                                 </td>
-                                <td>${getStatusExam(element.status)}</td>
+                                <td>${getStatusExam(getStatusStudentOfExam(element.id, idUser))}</td>
                                 <td>
-                                    <button class="btn btn-${getColorButton(element.status)} px-2 py-1 text-white" onclick="startExam(${element.status})">${getContentButton(element.status)}</button>
+                                    <button class="btn btn-${getColorButton(getStatusStudentOfExam(element.id, idUser))} px-2 py-1 text-white" onclick="startExam(${getStatusStudentOfExam(element.id, idUser)},${element.id})">${getContentButton(getStatusStudentOfExam(element.id, idUser))}</button>
                                 </td>
                             </tr>
             `
         })
         $('#dataExam').html(html)
     }
-    getDataExam(data_exam)
-    function startExam(status) {
-        if (status == 0) {
+    getDataExam(exam_list)
+    function startExam(status, id_exam) {
+        if (status == 1) {
             Swal.fire({
                 icon: "error",
                 title: "Bài kiểm tra chưa mở",
@@ -411,12 +177,17 @@
 
             });
         }
-        else if (status == 1) {
-            window.location.href = 'exam.html'
+        else if (status == 0) {
+            const student = getExamById(id_exam).students.find(student => student.id === idUser)
+            console.log(getExamById(id_exam).students);
+            window.location.href = `exam.html?idUser=${idUser}&idExam=${id_exam}`
         }
         else {
-            window.location.href = 'result-exam.html'
+            window.location.href = `result-exam.html?idUser=${idUser}&idExam=${id_exam}`
         }
+    }
+    function direcIndex() {
+        window.location.href = `index.html?idUser=${idUser}`
     }
     new DataTable('#table_exam');
 </script>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Kỳ Thi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Stylesheet/style.css">
+    <link rel="stylesheet" href="/Stylesheet/font.css">
+    <link rel="stylesheet" href="/Stylesheet/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
+
+</head>
+<style>
+    .swal2-actions {
+        gap: 15px;
+    }
+</style>
+
+<body style="background-color: #f6f8fa;">
+    <nav class="navbar navbar-expand-lg py-1" style="background-color: #bb2019;">
+        <div class="container">
+            <a class="navbar-brand f-f-BeVietNam-SemiBold f-s-20 text-white me-0">
+                <img class=" p-1 px-2" src="/Image/Home/ptit-logo.png" alt=""
+                    style="width: 40%; background-color: #fff; border-radius: 50%;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 f-f-BeVietNam-Medium">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link active text-white" aria-current="page" href="/views/index.html">Trang chủ</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/views/admin_dashboard.html">Quản lý kì thi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/views/manage-user.html">Quản lý người dùng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/views/statistic.html">Thống kê</a>
+                    </li>
+
+
+                </ul>
+                <!-- <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form> -->
+                <div class="d-flex gap-2">
+                    <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="login()">
+                        Đăng xuất
+                    </button>
+                    <!-- <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="register()">
+                        Đăng ký
+                    </button> -->
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4" style="background-color: #fff; border: 2px solid #e1e4e8;">
+        <div class="row justify-content-between px-4 my-4">
+            <div class="col-6 f-s-24 f-f-BeVietNam-SemiBold">
+                Danh Sách Người Dùng
+            </div>
+            <div class="btn btn-success col-1 d-flex justify-content-end f-s-16 f-f-BeVietNam-Medium"
+                data-bs-toggle="modal" data-bs-target="#addUserModal">Thêm mới</div>
+        </div>
+        <div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="addUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addUserModalLabel">Thêm mới người dùng</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-card mt-4 f-f-BeVietNam-Regular f-s-16 form_add_user">
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Họ và tên:</label>
+                                    <input class="form-control" type="text" placeholder="Nguyễn Văn A" id="name_user">
+                                    <div class="invalid-feedback mess_name_user f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập họ và tên.
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Mật khẩu:</label>
+                                    <input class="form-control" type="password" placeholder="**********" id="password">
+                                    <div class="invalid-feedback mess_password f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập mật khẩu.
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border-top: none;">
+                        <button type="button" class="btn btn-success" id="add_user">Thêm mới</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="editUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editUserModalLabel">Sửa thông tin người dùng</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-card mt-4 f-f-BeVietNam-Regular f-s-16 form_add_user">
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Họ và tên:</label>
+                                    <input class="form-control" type="text" placeholder="Nguyễn Văn A"
+                                        id="name_user_edit">
+                                    <div class="invalid-feedback mess_name_user_edit f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập họ và tên.
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Mật khẩu:</label>
+                                    <input class="form-control" type="password" placeholder="**********"
+                                        id="password_edit">
+                                    <div class="invalid-feedback mess_password_edit f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập mật khẩu.
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border-top: none;">
+                        <button type="button" class="btn btn-success" id="edit_user">Chỉnh sửa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center px-4">
+            <div class="col-12">
+                <table id="table_user" class="table table-striped f-f-BeVietNam-Regular" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Họ và tên</th>
+                            <th>Mật khẩu</th>
+                            <!-- <th>Thể loại</th> -->
+                            <!-- <th class="pe-2">Lớp</th>
+                            <th class="pe-2">Thời gian làm bài</th>
+                            <th class="pe-2 ps-0">Thời gian bắt đầu</th>
+                            <th>Trạng thái</th> -->
+                            <th class="text-center">Chỉnh sửa</th>
+                            <th class="text-center pe-2">Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list_user">
+
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="/Javascripts/nav.js"></script>
+    <script src="/Javascripts/exam-list.js"></script>
+    <script src="/Javascripts/get-data.js"></script>
+
+</body>
+<script>
+
+    console.log(users);
+
+    new DataTable('#table_user');
+    function getDataUser(data) {
+        var html = ""
+        data.forEach((element, index) => {
+            html += `
+            <tr class="align-middle">
+                <td>${element.username}</td>
+                <td>${element.password}</td>
+                <td class = "text-center">
+                    <i class="fa-solid fa-pen" data-bs-toggle="modal" data-bs-target="#editUserModal" onclick="editUser(${element.id})" style="cursor: pointer;">
+                    </i>    
+                </td>
+                <td class ="text-center">
+                    <i class="fa-solid fa-trash" onclick ="deleteUser(${element.id})" style="cursor: pointer;">
+                    </i>
+                </td>
+                
+            </tr>
+            `
+        })
+        $('#list_user').html(html)
+    }
+    getDataUser(users)
+    function deleteUser(id) {
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger",
+            },
+            buttonsStyling: false,
+        });
+        swalWithBootstrapButtons
+            .fire({
+                title: "Bạn có muốn xóa người dùng này không?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Đồng ý!",
+                cancelButtonText: "Hủy",
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    const index = users.findIndex(user => parseInt(user.id) === parseInt(id));
+                    if (index !== -1) {
+                        users.splice(index, 1);
+                    }
+                    localStorage.setItem("users", JSON.stringify(users)); // Lưu danh sách exam_list vào localStorage
+                    window.location.reload();
+                }
+            });
+
+    }
+
+    $('#add_user').click(() => {
+        var fields = [
+            "name_user",
+            "password",
+        ];
+        var isValid = true;
+
+        var values = fields.map((field) => {
+            var value = $("#" + field).val();
+            if (!validateAddExam(value)) {
+                $(".mess_" + field).show();
+                isValid = false;
+            } else {
+                $(".mess_" + field).hide();
+            }
+            return value;
+        });
+        if (isValid) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger",
+                },
+                buttonsStyling: false,
+            });
+            swalWithBootstrapButtons
+                .fire({
+                    title: "Bạn có muốn thêm mới không?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Đồng ý!",
+                    cancelButtonText: "Hủy",
+                    reverseButtons: true,
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        var user = {
+                            id: generateRandomId(),
+                            username: values[0],
+                            password: values[1],
+                            participations: {
+                                quantity: 0,
+                                average: 0,
+                            },
+                        }
+                        users.push(user);
+                        localStorage.setItem("users", JSON.stringify(users)); // Lưu danh sách exam_list vào localStorage
+                        window.location.reload();
+                    }
+                });
+
+        }
+    })
+    function editUser(id) {
+        $('#edit_user').click(() => {
+            var fields = [
+                "name_user_edit",
+                "password_edit",
+            ];
+            var isValid = true;
+
+            var values = fields.map((field) => {
+                var value = $("#" + field).val();
+                if (!validateAddExam(value)) {
+                    $(".mess_" + field).show();
+                    isValid = false;
+                } else {
+                    $(".mess_" + field).hide();
+                }
+                return value;
+            });
+            if (isValid) {
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: "btn btn-success",
+                        cancelButton: "btn btn-danger",
+                    },
+                    buttonsStyling: false,
+                });
+                swalWithBootstrapButtons
+                    .fire({
+                        title: "Bạn có thay đổi không?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Đồng ý!",
+                        cancelButtonText: "Hủy",
+                        reverseButtons: true,
+                    })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            var user = findUserById(users, id)
+                            user.username = values[0]
+                            user.password = values[1]
+                            localStorage.setItem("users", JSON.stringify(users)); // Lưu danh sách exam_list vào localStorage
+                            window.location.reload();
+                        }
+                    });
+
+            }
+        })
+
+    }
+    function findUserById(users, id) {
+        return users.find(user => parseInt(user.id) === parseInt(id));
+    }
+    function generateRandomId() {
+        var randomNumber = Math.floor(Math.random() * 10000);
+        var timestamp = Date.now();
+        return parseInt(timestamp.toString() + randomNumber.toString());
+    }
+</script>
+
+
+</html>

@@ -59,8 +59,9 @@ td {
   background-repeat: repeat;
 }
 
-.container {
-  max-width: 800px;
+.bg-custom {
+  /* max-width: 800px; */
+  min-height: 600px;
   margin: 20px auto;
   padding: 20px;
   background-color: rgba(255, 255, 255, 1); /* Màu nền với độ mờ 80% */

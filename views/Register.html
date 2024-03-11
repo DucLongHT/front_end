@@ -88,93 +88,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <script src="/Javascripts/get-data.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-
+    <script src="/Javascripts/main.js"></script>
 </body>
 <script>
-
-    $('#user_name').focus()
-
-    function register() {
-        if (validate()) {
-
-            // Kiểm tra xem mảng user đã tồn tại trong localStorage chưa
-            var users = localStorage.getItem('users');
-            if (!users) {
-                // Nếu mảng user chưa tồn tại, tạo một mảng mới và lưu vào localStorage
-                users = [];
-            } else {
-                // Nếu mảng user đã tồn tại, chuyển đổi từ chuỗi JSON sang mảng JavaScript
-                users = JSON.parse(users);
-            }
-            if (users.find(user => user.username === $('#user_name').val())) {
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: "Tên đăng nhập đã tồn tại",
-                    showConfirmButton: true,
-                    // timer: 1500
-                });
-                return;
-            }
-            // Tạo một đối tượng chứa thông tin đăng ký
-            var user = {
-                username: `${$('#user_name').val()}`,
-                password: `${$('#password').val()}`,
-            };
-            // Thêm đối tượng user vào mảng users
-            users.push(user);
-            // Lưu mảng users vào localStorage
-            localStorage.setItem('users', JSON.stringify(users));// Lưu mảng users vào localStorage
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Đăng ký thành công",
-                showConfirmButton: true,
-                timer: 1500
-            }).then((result) => {
-                $('input').val('')
-            });
-
-
-
-        }
-
-
-    }
-    function validate() {
-
-
-        if ($('#user_name').val() == '') {
-            $('.mess_user').addClass('d-block');
-        }
-        else {
-            $('.mess_user').removeClass('d-block');
-        }
-        if ($('#password').val() == '') {
-            $('.mess_password').addClass('d-block');
-        }
-        else {
-            $('.mess_password').removeClass('d-block');
-        }
-        if ($('#repeat_password').val() == '') {
-            $('.mess_repeat_password').addClass('d-block');
-        }
-        else {
-            $('.mess_repeat_password').removeClass('d-block');
-        }
-        if ($('#password').val() != $('#repeat_password').val()) {
-            $('.mess_repeat_password2').addClass('d-block');
-        }
-        else {
-            $('.mess_repeat_password2').removeClass('d-block');
-        }
-        if ($('#user_name').val() != '' && $('#password').val() != '' && $('#password').val() == $('#repeat_password').val()) {
-            return true
-        }
-        else return false;
-    }
     function setupEnterEvent(id) {
         document.getElementById(id).addEventListener('keyup', function (event) {
             if (event.key === 'Enter') {  // Sử dụng 'Enter' thay vì mã keyCode
@@ -184,7 +102,8 @@
     }
     setupEnterEvent('user_name');
     setupEnterEvent('password');
-    setupEnterEvent('repeat_password');
+    setupEnterEvent('repeat_password');    // }
+
 </script>
 
 </html>
