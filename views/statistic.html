@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Stylesheet/style.css">
+    <link rel="stylesheet" href="/Stylesheet/font.css">
+    <link rel="stylesheet" href="/Stylesheet/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
+
+</head>
+<style>
+    .swal2-actions {
+        gap: 15px;
+    }
+</style>
+
+<body style="background-color: #fff;">
+    <nav class="navbar navbar-expand-lg py-1" style="background-color: #bb2019;">
+        <div class="container">
+            <a class="navbar-brand f-f-BeVietNam-SemiBold f-s-20 text-white me-0">
+                <img class=" p-1 px-2" src="/Image/Home/ptit-logo.png" alt=""
+                    style="width: 40%; background-color: #fff; border-radius: 50%;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 f-f-BeVietNam-Medium">
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/views/admin_dashboard.html">Quản lý kì thi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/views/manage-user.html">Quản lý người dùng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/views/statistic.html">Thống kê</a>
+                    </li>
+
+
+                </ul>
+
+                <div class="d-flex gap-2">
+                    <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="login()">
+                        Đăng xuất
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section>
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-7">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-10">
+
+                    <table id="table_exam" class="table table-striped f-f-BeVietNam-Regular" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="text-start">Tên học sinh</th>
+
+                                <th class="text-center">Tổng số bài thi đã làm</th>
+                                <th class="text-center">Điểm trung bình</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data_statistic">
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="/Javascripts/nav.js"></script>
+    <script src="/Javascripts/get-data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+
+
+</body>
+
+<script>
+    function displayChart() {
+        console.log(exam_list);
+        console.log(users);
+        function getUserById(id) {
+            return users.find(function (user) {
+                return parseInt(user.id) === parseInt(id);
+            });
+        }
+        // Lấy dữ liệu từ localStorage
+        var calculatedScores = JSON.parse(localStorage.getItem('calculatedScores'));
+
+        // Tạo một đối tượng để lưu trữ tổng điểm của mỗi người dùng
+        var totalScores = {};
+
+        // Tạo một đối tượng để lưu trữ số lần tham gia của mỗi người dùng
+        var participationCounts = {};
+
+        // Lặp qua từng cặp idUser và idExam trong calculatedScores
+        for (var key in calculatedScores) {
+            // Tách key thành idUser và idExam
+            var parts = key.split('-');
+            var idUser = parts[0];
+            var idExam = parts[1];
+
+            // Nếu idUser chưa có trong totalScores, tạo một biến để lưu trữ tổng điểm
+            if (!totalScores[idUser]) {
+                totalScores[idUser] = 0;
+            }
+
+            // Nếu idUser chưa có trong participationCounts, tạo một biến để lưu trữ số lần tham gia
+            if (!participationCounts[idUser]) {
+                participationCounts[idUser] = 0;
+            }
+
+            // Thêm điểm vào tổng điểm của idUser
+            totalScores[idUser] += parseFloat(calculatedScores[key]);
+
+            // Tăng số lần tham gia lên 1
+            participationCounts[idUser]++;
+        }
+        var html = ""
+
+        // Count students with average score in different ranges
+        var excellent = 0;
+        var good = 0;
+        var fair = 0;
+        var poor = 0;
+        // Tính điểm trung bình cho mỗi người dùng
+        for (var user in totalScores) {
+            var averageScore = totalScores[user] / participationCounts[user];
+            console.log('User:', user, 'Average Score:', averageScore.toFixed(2));
+            html += `
+                <tr>
+                    <td class ="text-start">${getUserById(user).username}</td>
+                    <td class ="text-center">${getUserById(user).participations.quantity}</td>
+                    <td class ="text-center">${averageScore.toFixed(2)}</td>
+
+                </tr>
+            `
+            if (averageScore >= 9) {
+                excellent++;
+            } else if (averageScore >= 8 && averageScore < 9) {
+                good++;
+            } else if (averageScore >= 5 && averageScore < 8) {
+                fair++;
+            } else {
+                poor++;
+            }
+        }
+        $('#data_statistic').html(html)
+
+        // Draw the chart
+        const ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Excellent (>=9)', 'Good (8-8.9)', 'Fair (5-7.9)', 'Poor (<5)'],
+                datasets: [{
+                    label: 'Biểu đồ thống kê điểm trung bình',
+                    data: [excellent, good, fair, poor],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(255, 99, 132, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    // Call the function to display data when the script is executed
+    displayChart();
+
+    new DataTable('#table_exam');
+
+</script>
+
+</html>

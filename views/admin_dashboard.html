@@ -8,72 +8,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/Stylesheet/style.css">
     <link rel="stylesheet" href="/Stylesheet/font.css">
-    <style>
-        /* Style cho form */
-        /* form {
-            margin-bottom: 20px;
-        } */
-        /* 
-        label {
-            display: block;
-            margin-bottom: 5px;
-        } */
+    <link rel="stylesheet" href="/Stylesheet/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
 
-        /* input[type="text"],
-        input[type="password"],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        } */
-
-        button {
-            padding: 6px 12px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Style cho danh sách người dùng */
-        #userList {
-            margin-top: 20px;
-        }
-
-        #userItems {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        #userItems li {
-            margin-bottom: 5px;
-        }
-
-        #examItems li {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            font-size: 18px;
-        }
-
-        .button-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .button-group button {
-            margin-right: 10px;
-            margin-left: 10px;
-        }
-    </style>
 </head>
+<style>
+    .swal2-actions {
+        gap: 15px;
+    }
+</style>
 
 <body style="background-color: #f6f8fa;">
     <nav class="navbar navbar-expand-lg py-1" style="background-color: #bb2019;">
@@ -89,186 +34,334 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 f-f-BeVietNam-Medium">
-                    <!-- <li class="nav-item">
-                        <a class="nav-link active text-white" aria-current="page" href="/views/index.html">Trang chủ</a>
-                    </li> -->
+
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/views/admin_dashboard.html">Quản lý kì thi</a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Quản lý tài khoản</a>
-                    </li> -->
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Thống kê</a>
+                        <a class="nav-link text-white" href="/views/manage-user.html">Quản lý người dùng</a>
                     </li>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Thống kê
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/views/statistic.html">Thống kê</a>
+                    </li>
+
 
                 </ul>
-                <!-- <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
+
                 <div class="d-flex gap-2">
                     <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="login()">
                         Đăng xuất
                     </button>
-                    <!-- <button class="btn px-3 py-2 bg-white f-s-16 f-f-BeVietNam-Medium" onclick="register()">
-                        Đăng ký
-                    </button> -->
+
                 </div>
             </div>
         </div>
     </nav>
-    <div class="container mt-4">
-        <div class="row justify-content-center px-4" style="background-color: #fff; border: 2px solid #e1e4e8;">
-            <div class="col-auto f-s-24 f-f-BeVietNam-SemiBold mt-4">
-                Quản Lý Kỳ Thi
+    <div class="container mt-4" style="background-color: #fff; border: 2px solid #e1e4e8;">
+        <div class="row justify-content-between px-4 my-4">
+            <div class="col-6 f-s-24 f-f-BeVietNam-SemiBold">
+                Danh Sách Kỳ Thi
             </div>
-            <div class="col-12">
-
-                <!-- Form thêm mới kỳ thi -->
-                <form id="addExamForm">
-                    <div class="f-f-BeVietNam-Bold f-s-20">Tạo kì thi</div>
-                    <div class="d-flex mt-4 align-items-center justify-content-center">
-                        <label class="form-label f-s-18 f-f-BeVietNam-Medium mb-0" for="examName"
-                            style="width: 15%;">Tên Kỳ
-                            Thi:</label>
-                        <input class="form-control" type="text" id="examName" name="examName" required>
+            <div class="btn btn-success col-1 d-flex justify-content-end f-s-16 f-f-BeVietNam-Medium"
+                data-bs-toggle="modal" data-bs-target="#addExamModal">Thêm mới</div>
+        </div>
+        <div class="modal fade" id="addExamModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="addExamModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addExamModalLabel">Thêm mới kì thi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="d-flex justify-content-center align-items-center mt-4">
-                        <label class="form-label f-s-18 f-f-BeVietNam-Medium mb-0" for="examDate"
-                            style="width: 15%;">Ngày Thi:</label>
-                        <input class="form-control" type="date" id="examDate" name="examDate" required>
+                    <div class="modal-body">
+                        <form class="form-card mt-4 f-f-BeVietNam-Regular f-s-16 form_add_exam">
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Tên kì thi:</label>
+                                    <input class="form-control" type="text" placeholder="Giữa kì 1" id="name_exam">
+                                    <div class="invalid-feedback mess_name_exam f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập tên kì thi.
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Tên môn học:</label>
+                                    <input class="form-control" type="text" placeholder="Đại số" id="subject">
+                                    <div class="invalid-feedback mess_subject f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập tên môn học.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Hình thức thi:</label>
+                                    <!-- <input class="form-control" type="text" placeholder="Trắc nghiệm" id="type"> -->
+                                    <select class="form-control" name="" id="type">
+                                        <option value="Trắc nghiệm">Trắc nghiệm</option>
+                                        <option value="Tự luận">Tự luận</option>
+                                        <option value="TN + TL">TN + TL</option>
+                                        <option value="Phòng máy">Phòng máy</option>
+                                        <option value="Vấn đáp">Vấn đáp</option>
+                                    </select>
+                                    <div class="invalid-feedback mess_type f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập hình thức thi.
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Khóa học:</label>
+                                    <input class="form-control" type="text" placeholder="D21" id="class_exam">
+                                    <div class="invalid-feedback mess_class_exam f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập khóa học.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Thời gian làm bài:</label>
+                                    <input class="form-control" type="number" placeholder="90 phút" id="time_exam">
+                                    <div class="invalid-feedback mess_time_exam f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập thời gian làm bài.
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Thời gian thi:</label>
+                                    <input class="form-control" type="date" id="time_start">
+                                    <div class="invalid-feedback mess_time_start f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập thời gian thi.
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <button class="d-flex mx-auto btn btn-primary mt-4" type="submit">Thêm Mới</button>
-                </form>
-                <!-- Danh sách kỳ thi -->
-                <div id="examList">
-                    <div class="f-f-BeVietNam-SemiBold f-s-20 text_list_exam mt-4">Danh Sách Kỳ Thi</div>
-                    <ul id="examItems"></ul>
+                    <div class="modal-footer" style="border-top: none;">
+                        <button type="button" class="btn btn-success" data-bs-target="#addQuestionModal"
+                            id="add_question">Thêm câu hỏi</button>
+                    </div>
                 </div>
-
             </div>
         </div>
+        <div class="modal fade" id="addQuestionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="addQuestionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addQuestionModalLabel">Thêm mới câu hỏi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form class="form-card f-f-BeVietNam-Regular f-s-16 form_add_question">
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-12 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Câu hỏi</label>
+                                    <input class="form-control" type="text" placeholder="Câu hỏi" id="input_question">
+                                    <div class="invalid-feedback mess_input_question  f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập câu hỏi.
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Đáp án A</label>
+                                    <input class="form-control" type="text" placeholder="Phương án 1" id="answer0">
+                                    <div class="invalid-feedback mess_answer0  f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập phương án A.
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Đáp án B</label>
+                                    <input class="form-control" type="text" placeholder="Phương án 2" id="answer1">
+                                    <div class="invalid-feedback mess_answer1 f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập phương án B.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Đáp án C</label>
+                                    <input class="form-control" type="text" placeholder="Phương án 3" id="answer2">
+
+                                    <div class="invalid-feedback mess_answer2 f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập phương án C.
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Đáp án D</label>
+                                    <input class="form-control" type="text" placeholder="Phương án 4" id="answer3">
+
+                                    <div class="invalid-feedback mess_answer3  f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập phương án D.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center text-left mt-3">
+                                <div class="form-group col-sm-6 flex-column d-flex">
+                                    <label class="form-control-label px-2 mb-1">Đáp án đúng</label>
+                                    <select class="form-control" name="" id="correct_answer">
+                                        <option selected value="0">Đáp án A</option>
+                                        <option value="1">Đáp án B</option>
+                                        <option value="2">Đáp án C</option>
+                                        <option value="3">Đáp án D</option>
+                                    </select>
+                                    <div class="invalid-feedback  f-f-BeVietNam-Regular f-s-14">
+                                        Vui lòng nhập đáp án đúng.
+                                    </div>
+                                </div>
+
+                        </form>
+                        <div class="row justify-content-end mt-3">
+                            <div class="col-10 d-flex justify-content-end">
+                                <div class="btn btn-primary" id="add_question_multipe_choice">Thêm câu hỏi</div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center f-f-BeVietNam-Regular" id="list_question">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="border-top: none;">
+                        <button type="button" class="btn btn-danger cancel_create_exam">Hủy</button>
+                        <button type="button" class="btn btn-success" id="addExam">Thêm mới</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center px-4">
+        <div class="col-12">
+            <table id="table_exam" class="table table-striped f-f-BeVietNam-Regular" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 14%;">Tên kì thi</th>
+                        <th style="width: 10%;">Môn học</th>
+                        <th>Thể loại</th>
+                        <th class="pe-2">Lớp</th>
+                        <th class="pe-2">Thời gian</th>
+                        <th class="pe-2 ps-0">Thời gian bắt đầu</th>
+                        <th>Trạng thái</th>
+                        <th>Số hs tham gia</th>
+                        <th class="text-center pe-2">Chi tiết</th>
+                        <th class="text-center pe-2">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody id="list_exam">
+
+
+                </tbody>
+
+            </table>
+        </div>
+
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="/Javascripts/nav.js"></script>
+    <script src="/Javascripts/exam-list.js"></script>
+    <script src="/Javascripts/get-data.js"></script>
 
 </body>
 <script>
 
-    // Khai báo danh sách kỳ thi
-    let exams = [];
+    console.log(exam_list);
 
-    // Hàm hiển thị danh sách kỳ thi
-    function displayExams() {
-        if (exams.length == 0) {
-            $('.text_list_exam').css('display', 'none');
-        }
-        else {
-            $('.text_list_exam').css('display', 'block');
-        }
-        const examItems = document.getElementById('examItems');
-
-        examItems.innerHTML = '';
-        exams.forEach((exam, index) => {
-            const li = document.createElement('li');
-            li.textContent = `${index + 1}. ${exam.name} - Ngày Thi: ${exam.date}`;
-
-            // Tạo button chỉnh sửa kỳ thi
-            const editButton = document.createElement('button');
-            editButton.textContent = 'Đổi Tên';
-            editButton.addEventListener('click', () => {
-                const newName = prompt('Nhập tên mới cho kỳ thi:', exam.name);
-                if (newName !== null) {
-                    exams[index].name = newName;
-                    displayExams();
-                }
-            });
-            li.appendChild(editButton);
-
-            // Tạo nút xem danh sách sinh viên
-            const viewStudentsButton = document.createElement('button');
-            viewStudentsButton.textContent = 'Danh Sách Sinh Viên';
-            viewStudentsButton.addEventListener('click', () => {
-                // Chuyển hướng đến trang student_list.html và truyền tham số kỳ thi
-                window.location.href = `student_list.html?examId=${index}&examName=${encodeURIComponent(exam.name)}`;
-            });
-            li.appendChild(viewStudentsButton);
-
-            examItems.appendChild(li);
-
-            // Tạo nút thêm câu hỏi
-            const addQuestionButton = document.createElement('button');
-            addQuestionButton.textContent = 'Câu Hỏi Thi';
-            addQuestionButton.addEventListener('click', () => {
-                // Chuyển hướng đến trang tạo/chỉnh sửa kỳ thi và truyền tham số kỳ thi
-                window.location.href = `create_exam.html?examId=${index}&examName=${encodeURIComponent(exam.name)}`;
-            });
-            li.appendChild(addQuestionButton);
-
-            // Tạo nút thống kê
-            const viewStatsButton = document.createElement('button');
-            viewStatsButton.textContent = 'Thống Kê';
-            viewStatsButton.addEventListener('click', () => {
-                // Chuyển hướng đến trang statistics.html và truyền tham số kỳ thi
-                window.location.href = `statistics.html?examId=${index}&examName=${encodeURIComponent(exam.name)}`;
-            });
-            li.appendChild(viewStatsButton);
-
-            // Tạo button xóa kỳ thi
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Xóa Kỳ Thi';
-            deleteButton.addEventListener('click', () => {
-                alert('Bạn có xác nhận xóa kì thi')
-                exams.splice(index, 1);
-                displayExams();
-                saveExamsToLocalStorage();
-            });
-            li.appendChild(deleteButton);
+    // Hàm lấy chuyển danh sách kì thi sang bảng để hiển thị
+    function getExamList(data) {
+        var html = ""
+        data.forEach((element, index) => {
+            element.status = getStatus(element.time_start)
+            html += `
+            <tr class="align-middle">
+                <td>${element.name_exam}</td>
+                <td>${element.subject}</td>
+                <td>${element.type}</td>
+                <td>${element.class_exam}</td>
+                <td><span class="f-f-BeVietNam-Bold">${element.time_exam} phút</span></td>
+                <td>
+                    <span class="f-f-BeVietNam-Bold">${element.time_start}</span>
+                </td>
+                <td> ${convertStatusToText(element.status)}</td>
+                <td class = "text-center">${element.students.length}</td>
+                <td class="text-center">
+                    <i class="fas fa-eye" onclick= "detailExam(${parseInt(element.id)})" style="cursor: pointer;">
+                    </i>
+                </td>
+                <td class="text-center">
+                    <i class="fa-solid fa-trash" onclick= "deleteExam(${parseInt(element.id)})" style="cursor: pointer;">
+                    </i>
+                </td>
+            </tr>
+            `
         });
+        $('#list_exam').html(html);
+    }
+    getExamList(exam_list)
+    // Hàm chuyển status sang text
+    function convertStatusToText(status) {
+        if (status == 1) return "Chưa bắt đầu"
+        else if (status == 0) return "Đang diễn ra"
+        else return "Đã kết thúc"
+    }
+    new DataTable('#table_exam');
+    // Hàm chyển sang trang chi tiết kì thi
+    function detailExam(id) {
+        window.location.href = "exam-detail.html?id=" + id;
+    }
+    // Hàm xóa object từ mảng ban đầu dựa trên thuộc tính id
+    function deleteExam(id) {
+
+        // console.log(exam_list);
+        console.log(id);
+        // Nếu tìm thấy vị trí, xóa object từ mảng
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+            title: "Bạn có muốn xóa không?",
+            text: "Bạn sẽ không thể khôi phục kì thi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Đồng ý!",
+            cancelButtonText: "Hủy",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Tìm vị trí của object có id cần xóa trong mảng
+                var index = exam_list.findIndex(function (exam) {
+                    return exam.id == id;
+                });
+                // Nếu tìm thấy vị trí, xóa object từ mảng
+                if (index !== -1) {
+                    exam_list.splice(index, 1);
+                }
+                localStorage.setItem("exam_list", JSON.stringify(exam_list)); // Lưu danh sách exam_list vào localStorage
+                window.location.reload();
+                swalWithBootstrapButtons.fire({
+                    title: "Đã xóa!",
+                    text: "Kì thi đã bị xóa.",
+                    icon: "success"
+                });
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire({
+                    title: "Đã hủy",
+                    text: "Kì thi chưa bị xóa",
+                    icon: "error"
+                });
+            }
+        });
+
     }
 
-    // Xử lý sự kiện submit form thêm mới kỳ thi
-    document.getElementById('addExamForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const examName = document.getElementById('examName').value;
-        const examDate = document.getElementById('examDate').value;
-        exams.push({ name: examName, date: examDate, users: [] });
-        displayExams();
-
-        localStorage.setItem('exams', JSON.stringify(exams));
-        this.reset();
-    });
-
-    function saveExamsToLocalStorage() {
-        localStorage.setItem('exams', JSON.stringify(exams));
-    }
-    window.onload = function () {
-        const storedExams = localStorage.getItem('exams');
-        if (storedExams) {
-            exams = JSON.parse(storedExams);
-            displayExams();
-        }
-    };
-    function login() {
-        window.location.href = 'login.html';
-    }
 </script>
 
 </html>
